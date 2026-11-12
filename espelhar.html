@@ -5,11 +5,11 @@ let D;const INT=[[0,'Realtime'],[5,'5 min'],[10,'10 min'],[15,'15 min'],[30,'30 
 const P={shopee:'Shopee',amazon:'Amazon',ml:'MercadoLivre',magalu:'Magalu',natura:'Natura'};
 const nome=i=>D.g[i]??'(grupo saiu)';const hh=h=>h===24?'00h (meia-noite)':String(h).padStart(2,'0')+'h';
 const dur=e=>(((e.t-e.i)+24)%24||24)+' horas';const opt=(l,v)=>l.map(([k,t])=>'<option value="'+k+'"'+(String(k)===String(v)?' selected':'')+'>'+esc(t)+'</option>').join('');
-function lista(){$('#app').innerHTML='<div class=topo><h1>Espelhar Grupos</h1><button class=btn onclick="form()">+ Criar</button></div><div class=lista>'+
-(D.e.length?D.e.map(e=>'<div class=card onclick="form('+e.id+')"><h3>'+esc(nome(e.f))+'<span class="badge '+(e.a?'verde':'cinzab')+'">'+(e.a?'Ativo':'Inativo')+'</span></h3>'+
+function lista(){$('#app').innerHTML='<div class=topo><h1>Espelhar Grupos</h1><button class=btn onclick="editarEsp()">+ Criar</button></div><div class=lista>'+
+(D.e.length?D.e.map(e=>'<div class=card onclick="editarEsp('+e.id+')"><h3>'+esc(nome(e.f))+'<span class="badge '+(e.a?'verde':'cinzab')+'">'+(e.a?'Ativo':'Inativo')+'</span></h3>'+
 '<div class=info><span>🕒 '+dur(e)+'</span></div><div class=info><span>⚙️ Modo: '+(e.m==='copy'?'Copy':'Post')+'</span><span>⏱️ Intervalo: '+(INT.find(x=>x[0]===e.v)||[0,e.v+' min'])[1]+'</span></div>'+
 '<div class=info>Plataformas: '+e.p.map(x=>P[x]).join(', ')+'</div><div class=info>Destinos: '+e.d.map(nome).map(esc).join(', ')+'</div></div>').join(''):'<div class=vazio>Nenhum espelhamento. Toque em + Criar.</div>')+'</div>'}
-function form(id){const e=D.e.find(x=>x.id===id)||{f:'',d:[],p:['shopee','amazon','ml'],i:0,t:24,m:'copy',c:false,v:0,a:true};
+function editarEsp(id){const e=D.e.find(x=>x.id===id)||{f:'',d:[],p:['shopee','amazon','ml'],i:0,t:24,m:'copy',c:false,v:0,a:true};
 const grupos=D.g.map((n,i)=>[i,n]);
 $('#app').innerHTML='<div class=topo><h1>'+(id?'Editar Espelhamento: '+esc(nome(e.f)):'Criar Novo Espelhamento')+'</h1></div><div class=form>'+
 '<label>Grupo do Amiguinho 🫶 *</label><select id=f><option value="">Selecione um grupo</option>'+opt(grupos,e.f)+'</select>'+
