@@ -1,0 +1,19 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Regras de Para</title><script src="https://telegram.org/js/telegram-web-app.js"></script><link rel="stylesheet" href="estilo.css"></head>
+<body><div id="app"></div><script src="comum.js"></script><script>
+let R;const TIPOS={substituir:['Substituir','azul'],remover:['Remover Linha','verm'],ignorar:['Ignorar Mensagem','lar']};const SUF=['HB','CR','PB','AF','ACC'];
+function tela(){$('#app').innerHTML='<div class=topo><h1>Regras de Para</h1><button class=btn onclick="nova()">+ Adicionar Regra</button></div><div class=lista>'+
+R.r.map((x,i)=>'<div class=card><h3>'+esc(x.de)+'<span class="badge '+TIPOS[x.acao][1]+'">'+TIPOS[x.acao][0]+'</span></h3>'+
+(x.acao==='substituir'?'<div class=info><b>Por:</b>&nbsp;'+(x.para?esc(x.para):'<span class=it>(Vazio / Remover)</span>')+'</div>':x.acao==='remover'?'<div class=it>A linha que contém este termo será removida.</div>':'<div class=it>Mensagens com este termo não são repassadas.</div>')+
+'<div style="text-align:right;margin-top:6px"><button class="btn cinza" style="padding:4px 10px;font-size:13px" onclick="R.r.splice('+i+',1);tela()">Apagar</button></div></div>').join('')+
+'<div class=card><h3>Ignorar Cupons Shopee?</h3><div class=chk>'+SUF.map(s=>'<label><input type=checkbox value="'+s+'"'+(R.c.includes(s)?' checked':'')+'>'+s+'</label>').join('')+'</div><hr style="border:0;border-top:1px solid #111827;margin:14px 0">'+
+'<h3>Rodapé Personalizado</h3><div class=sub style="margin-bottom:8px">Adicione um texto para aparecer no final de todas as mensagens. Deixe em branco se não quiser rodapé.</div><textarea id=rod rows=3 placeholder="Ex: Compre agora com nosso link exclusivo!">'+esc(R.f)+'</textarea>'+
+'<div style="margin-top:12px"><button class=btn style="background:#111827" onclick="salvar()">Salvar Configurações</button></div></div></div>'}
+function nova(){R.c=[...document.querySelectorAll('.chk input:checked')].map(i=>i.value);R.f=$('#rod').value;
+$('#app').innerHTML='<div class=topo><h1>Adicionar Regra</h1></div><div class=form><label>Tipo</label><select id=tipo onchange="$(\'#pb\').style.display=this.value===\'substituir\'?\'\':\'none\'"><option value=substituir>Substituir</option><option value=remover>Remover Linha</option><option value=ignorar>Ignorar Mensagem</option></select>'+
+'<label>Termo</label><input type=text id=de placeholder="Ex: @fulano"><div id=pb><label>Substituir por</label><input type=text id=para placeholder="Vazio = apagar o termo"></div>'+
+'<div class=acoes><button class="btn cinza" onclick="tela()">Cancelar</button><button class=btn onclick="add()">Adicionar</button></div></div>'}
+function add(){const de=$('#de').value.trim();if(!de)return;R.r.push({acao:$('#tipo').value,de,para:$('#para').value});tela()}
+function salvar(){R.c=[...document.querySelectorAll('.chk input:checked')].map(i=>i.value);R.f=$('#rod').value;enviar({tipo:'regras',r:R.r,c:R.c,f:R.f})}
+lerDados().then(d=>{if(!d)return semDados();R=d;tela()}).catch(semDados);
+</script></body></html>

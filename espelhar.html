@@ -1,0 +1,29 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Espelhar Grupos</title><script src="https://telegram.org/js/telegram-web-app.js"></script><link rel="stylesheet" href="estilo.css"></head>
+<body><div id="app"></div><script src="comum.js"></script><script>
+let D;const INT=[[0,'Realtime'],[5,'5 min'],[10,'10 min'],[15,'15 min'],[30,'30 min'],[60,'1 hora']];
+const P={shopee:'Shopee',amazon:'Amazon',ml:'MercadoLivre',magalu:'Magalu',natura:'Natura'};
+const nome=i=>D.g[i]??'(grupo saiu)';const hh=h=>h===24?'00h (meia-noite)':String(h).padStart(2,'0')+'h';
+const dur=e=>(((e.t-e.i)+24)%24||24)+' horas';const opt=(l,v)=>l.map(([k,t])=>'<option value="'+k+'"'+(String(k)===String(v)?' selected':'')+'>'+esc(t)+'</option>').join('');
+function lista(){$('#app').innerHTML='<div class=topo><h1>Espelhar Grupos</h1><button class=btn onclick="form()">+ Criar</button></div><div class=lista>'+
+(D.e.length?D.e.map(e=>'<div class=card onclick="form('+e.id+')"><h3>'+esc(nome(e.f))+'<span class="badge '+(e.a?'verde':'cinzab')+'">'+(e.a?'Ativo':'Inativo')+'</span></h3>'+
+'<div class=info><span>🕒 '+dur(e)+'</span></div><div class=info><span>⚙️ Modo: '+(e.m==='copy'?'Copy':'Post')+'</span><span>⏱️ Intervalo: '+(INT.find(x=>x[0]===e.v)||[0,e.v+' min'])[1]+'</span></div>'+
+'<div class=info>Plataformas: '+e.p.map(x=>P[x]).join(', ')+'</div><div class=info>Destinos: '+e.d.map(nome).map(esc).join(', ')+'</div></div>').join(''):'<div class=vazio>Nenhum espelhamento. Toque em + Criar.</div>')+'</div>'}
+function form(id){const e=D.e.find(x=>x.id===id)||{f:'',d:[],p:['shopee','amazon','ml'],i:0,t:24,m:'copy',c:false,v:0,a:true};
+const grupos=D.g.map((n,i)=>[i,n]);
+$('#app').innerHTML='<div class=topo><h1>'+(id?'Editar Espelhamento: '+esc(nome(e.f)):'Criar Novo Espelhamento')+'</h1></div><div class=form>'+
+'<label>Grupo do Amiguinho 🫶 *</label><select id=f><option value="">Selecione um grupo</option>'+opt(grupos,e.f)+'</select>'+
+'<label>Grupos de Destino * (máx. 20)</label><div class=caixa id=dest>'+grupos.map(([i,n])=>'<label><input type=checkbox value="'+i+'"'+(e.d.includes(i)?' checked':'')+' onchange="conta()">'+esc(n)+'</label>').join('')+'</div><div class=sub id=cont></div>'+
+'<label>Plataformas *</label><div class=caixa id=plat>'+Object.entries(P).map(([k,t])=>'<label><input type=checkbox value="'+k+'"'+(e.p.includes(k)?' checked':'')+'>'+t+'</label>').join('')+'</div>'+
+'<label>Horário *</label><div class=linha3><div><span class=mini>Início</span><select id=i>'+opt([...Array(24).keys()].map(h=>[h,hh(h)]),e.i)+'</select></div><div><span class=mini>Término</span><select id=t>'+opt([...Array(24).keys()].map(h=>[h+1,hh(h+1)]),e.t)+'</select></div><div><span class=mini>Modo</span><select id=m>'+opt([['copy','Copy'],['post','Post']],e.m)+'</select></div></div>'+
+'<label style="display:flex;gap:8px;font-weight:500;margin-top:16px"><input type=checkbox id=a'+(e.a?' checked':'')+'>Espelhamento habilitado</label>'+
+'<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px"><label style="display:flex;gap:8px;margin:0;font-weight:500"><input type=checkbox id=c'+(e.c?' checked':'')+'>Copiar Imagem?</label><span style="display:flex;gap:8px;align-items:center">Intervalo <select id=v style="width:auto">'+opt(INT,e.v)+'</select></span></div>'+
+'<div class=acoes><button class="btn cinza" onclick="lista()">Cancelar</button>'+(id?'<button class="btn vermelho" onclick="apagar('+id+')">Excluir</button>':'')+'<button class=btn onclick="salvar('+(id||0)+')">'+(id?'Salvar':'Criar')+'</button></div><div class=sub id=msg style="color:#dc2626"></div></div>';conta()}
+function conta(){const n=document.querySelectorAll('#dest input:checked').length;$('#cont').textContent=n+'/20 selecionados';$('#cont').style.color=n>20?'#dc2626':''}
+function salvar(id){const v=s=>[...document.querySelectorAll(s+' input:checked')].map(x=>x.value);
+const b={tipo:'esp',acao:'salvar',k:D.k,id:id||0,f:$('#f').value===''?null:+$('#f').value,d:v('#dest').map(Number),p:v('#plat'),i:+$('#i').value,t:+$('#t').value,m:$('#m').value,c:$('#c').checked,v:+$('#v').value,a:$('#a').checked};
+if(b.f===null)return $('#msg').textContent='Selecione o Grupo do Amiguinho.';if(!b.d.length)return $('#msg').textContent='Marque pelo menos 1 grupo de destino.';
+if(b.d.length>20)return $('#msg').textContent='Máximo de 20 grupos de destino.';if(!b.p.length)return $('#msg').textContent='Marque pelo menos 1 plataforma.';enviar(b)}
+function apagar(id){if(confirm('Excluir este espelhamento?'))enviar({tipo:'esp',acao:'apagar',k:D.k,id})}
+lerDados().then(d=>{if(!d)return semDados();D=d;lista()}).catch(semDados);
+</script></body></html>

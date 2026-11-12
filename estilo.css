@@ -1,0 +1,15 @@
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f3f4f6;color:#111827;font-size:15px}
+.topo{position:sticky;top:0;background:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e5e7eb;z-index:5}
+h1{font-size:20px;margin:0;font-weight:700}.btn{background:#2563eb;color:#fff;border:0;border-radius:8px;padding:9px 14px;font-size:15px;font-weight:600}
+.btn.cinza{background:#f3f4f6;color:#374151}.btn.vermelho{background:#dc2626;color:#fff}.lista{padding:12px}
+.card{background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.card h3{margin:0 0 8px;font-size:16px;font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.badge{font-size:11px;border-radius:999px;padding:2px 8px;font-weight:600;white-space:nowrap;height:fit-content}
+.verde{background:#dcfce7;color:#15803d}.cinzab{background:#f3f4f6;color:#6b7280}.azul{background:#dbeafe;color:#1d4ed8}.verm{background:#fee2e2;color:#dc2626}.lar{background:#ffedd5;color:#c2410c}
+.info{color:#4b5563;font-size:13px;margin:4px 0;display:flex;gap:14px;flex-wrap:wrap}.form{padding:16px;background:#fff;min-height:100vh}
+label{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}select,input[type=text],textarea{width:100%;padding:9px;border:1px solid #d1d5db;border-radius:8px;font-size:15px;background:#fff}
+.caixa{border:1px solid #111827;border-radius:8px;padding:6px 10px;max-height:190px;overflow:auto}.caixa label{display:flex;gap:8px;font-weight:400;margin:0;padding:4px 0;font-size:13px}
+.linha3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.mini{font-size:11px;color:#6b7280;display:block;margin-bottom:3px}
+.acoes{display:flex;gap:10px;margin-top:22px}.acoes .btn{flex:1;padding:12px}.sub{color:#6b7280;font-size:12px;margin-top:4px}
+.it{font-style:italic;color:#6b7280;font-size:13px}.chk{display:flex;gap:14px;flex-wrap:wrap}.chk label{display:flex;gap:5px;font-weight:500;margin:6px 0}
+.vazio{text-align:center;color:#6b7280;padding:40px}
