@@ -1,0 +1,13 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Personalizar Mensagens</title><script src="https://telegram.org/js/telegram-web-app.js"></script><link rel="stylesheet" href="estilo.css"></head><body><div id="app"></div><script src="comum.js"></script><script>
+let M;const PL=[['geral','Todas'],['amazon','Amazon'],['magalu','Magalu'],['ml','Mercado Livre'],['shopee','Shopee'],['natura','Natura']];
+const VARS=['{gatilho}','{nome}','{link}','{preco}','{pa}','{pd}','{par}','{cp}','{cpi}','{rec}','{un}','{rodape}'];
+const txt=p=>p==='geral'?M.g:(M.p[p]||'');
+function tela(p){p=p||'geral';$('#app').innerHTML='<div class=topo><h1>Personalizar Mensagens</h1></div><div class=form><label style="margin-top:0">Plataforma</label><select id=p onchange="tela(this.value)">'+PL.map(([k,t])=>'<option value='+k+(k===p?' selected':'')+'>'+t+'</option>').join('')+'</select>'+
+'<textarea id=t rows=16 style="margin-top:12px;font-family:inherit">'+esc(txt(p))+'</textarea>'+(p!=='geral'?'<div class=sub>Vazio = usa a mensagem de "Todas".</div>':'')+
+'<div class=sub style="margin-top:10px">Variáveis disponíveis (toque para inserir):</div><div class=chk style="gap:6px;margin-top:6px">'+VARS.map(v=>'<span class="badge cinzab" style="font-size:12px;padding:4px 8px" onclick="ins(\''+v+'\')">'+v+'</span>').join('')+'</div>'+
+'<div class=sub style="margin-top:8px">Trechos que só aparecem se tiver o dado: &lt;pa&gt;...&lt;/pa&gt; &lt;cp&gt;...&lt;/cp&gt; &lt;par&gt;...&lt;/par&gt;</div>'+
+'<div class=acoes><button class="btn cinza" onclick="tg.close()">Cancelar</button><button class=btn onclick="salvar()">Salvar</button></div></div>'}
+function ins(v){const t=$('#t'),i=t.selectionStart??t.value.length;t.value=t.value.slice(0,i)+v+t.value.slice(i);t.focus()}
+function salvar(){enviar({tipo:'msg',p:$('#p').value,t:$('#t').value})}
+lerDados().then(d=>{if(!d)return semDados();M=d;tela()}).catch(semDados);
+</script></body></html>

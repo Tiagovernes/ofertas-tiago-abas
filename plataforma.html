@@ -1,0 +1,18 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Plataforma</title><script src="https://telegram.org/js/telegram-web-app.js"></script><link rel="stylesheet" href="estilo.css"></head><body><div id="app"></div><script src="comum.js"></script><script>
+let C;const P=new URLSearchParams(location.search).get('p');
+const ok=v=>v?'<span class="badge verde">Configurado</span>':'<span class="badge cinzab">Não configurado</span>';
+const campo=(id,rot,val,ph,tipo)=>'<label>'+rot+'</label><input type='+(tipo||'text')+' id='+id+' value="'+esc(val||'')+'" placeholder="'+esc(ph||'')+'">';
+const T={
+shopee:()=>'<div class=card><h3>API Shopee '+ok(C.shopeeOk)+'</h3><div class=sub>Credenciais de integração para captura de ofertas.</div>'+campo('a','App ID',C.shopeeAppId,'')+campo('s','Senha (Secret)','',C.shopeeOk?'•••••• (deixe vazio para manter)':'','password')+'</div>'+
+ '<div class=card><h3>Definições de SubID</h3>'+campo('sub',"SubID's",C.shopeeSubId,'promo1,promo2')+'<div class=sub>Separe por vírgula para rotacionar, ex: promo1,promo2</div></div>',
+amazon:()=>'<div class=card><h3>Associados Amazon '+ok(C.amazonTag)+'</h3>'+campo('tag','ID de Associado',C.amazonTag,'seunome-20')+'</div>',
+ml:()=>'<div class=card><h3>Conexão Mercado Livre '+ok(C.mlOk)+'</h3><div class=sub>Configure o Token da sua conta do programa de afiliados (gera o meli.la).</div>'+campo('tok','Token ID','',C.mlOk?'•••••• (deixe vazio para manter)':'Insira o Token','password')+campo('etq','Etiqueta',C.mlTag,'Ex: seunome')+campo('tool','Ferramenta (matt_tool)',C.mlTool,'Ex: 12345678')+'</div>',
+magalu:()=>'<div class=card><h3>Credenciais Magalu '+ok(C.magaluPromoter)+'</h3><div class=sub>Vincule a sua conta de parceiro Magalu.</div>'+campo('pro','Promoter ID',C.magaluPromoter,'')+'</div>',
+natura:()=>'<div class=card><h3>Espaço Natura '+ok(C.naturaId)+'</h3><div class=sub>Configure o ID do seu espaço de consultor.</div>'+campo('nat','Nome do Espaço / ID',C.naturaId,'')+'</div>'};
+const NOME={shopee:'Shopee',amazon:'Amazon',ml:'Mercado Livre',magalu:'Magalu',natura:'Natura'};
+function tela(){$('#app').innerHTML='<div class=topo><h1>'+NOME[P]+'</h1></div><div class=lista>'+T[P]()+'<div class=acoes><button class="btn cinza" onclick="tg.close()">Cancelar</button><button class=btn onclick="salvar()">Salvar</button></div></div>'}
+const v=id=>($('#'+id)||{value:''}).value.trim();
+function salvar(){const d={tipo:'plat',p:P};
+if(P==='shopee'){d.a=v('a');d.s=v('s');d.sub=v('sub')}if(P==='amazon')d.tag=v('tag');if(P==='ml'){d.tok=v('tok');d.etq=v('etq');d.tool=v('tool')}if(P==='magalu')d.pro=v('pro');if(P==='natura')d.nat=v('nat');enviar(d)}
+lerDados().then(d=>{if(!d||!T[P])return semDados();C=d;tela()}).catch(semDados);
+</script></body></html>

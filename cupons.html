@@ -1,0 +1,7 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Meus Cupons</title><script src="https://telegram.org/js/telegram-web-app.js"></script><link rel="stylesheet" href="estilo.css"></head><body><div id="app"></div><script src="comum.js"></script><script>
+let C;const PL=[['amazon','Amazon'],['magalu','Magalu'],['ml','Mercado Livre'],['shopee','Shopee'],['natura','Natura']];
+function tela(p){$('#app').innerHTML='<div class=topo><h1>Meus Cupons</h1></div><div class=lista><div class=card><label style="margin-top:0">Selecione uma Plataforma</label><select id=p onchange="tela(this.value)"><option value="">-- Selecione --</option>'+PL.map(([k,t])=>'<option value='+k+(k===p?' selected':'')+'>'+t+(C[k]?' ('+esc(C[k])+')':'')+'</option>').join('')+'</select>'+
+(p?'<label>Cupom aplicado automaticamente nas ofertas</label><input type=text id=c value="'+esc(C[p]||'')+'" placeholder="Ex: MEUCUPOM10"><div class=sub>Deixe vazio para não usar cupom nessa loja.</div><div class=acoes><button class="btn cinza" onclick="tg.close()">Cancelar</button><button class=btn onclick="salvar()">Salvar</button></div>':'')+'</div></div>'}
+function salvar(){enviar({tipo:'cupom',p:$('#p').value,c:$('#c').value.trim()})}
+lerDados().then(d=>{if(!d)return semDados();C=d;tela('')}).catch(semDados);
+</script></body></html>

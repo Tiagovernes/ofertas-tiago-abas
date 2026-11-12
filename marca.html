@@ -1,0 +1,13 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Marca d'água</title><script src="https://telegram.org/js/telegram-web-app.js"></script><link rel="stylesheet" href="estilo.css"></head><body><div id="app"></div><script src="comum.js"></script><script>
+let W;const MOD=[['texto','Texto','Texto no centro da imagem'],['selo','Selo','Texto no canto'],['borda','Selo na borda','Texto colado na lateral']];const COR=[['#ffffff','Branco'],['#000000','Preto'],['#facc15','Amarelo']];
+function tela(){$('#app').innerHTML='<div class=topo><h1>Marca d\'água</h1></div><div class=lista>'+
+'<div class=card><h3>Marca d\'água<label style="margin:0"><input type=checkbox id=on'+(W.on?' checked':'')+'></label></h3><div class=sub>Aplicada nas imagens dos posts e nas imagens copiadas do espelhamento.</div></div>'+
+'<div class=card><label style="margin-top:0">Texto</label><input type=text id=t value="'+esc(W.t)+'"></div>'+
+'<div class=card><label style="margin-top:0">Modelo</label><div class=linha3>'+MOD.map(([k,n,d])=>'<div onclick="ler();W.m=\''+k+'\';tela()" style="border:2px solid '+(W.m===k?'#2563eb':'#e5e7eb')+';border-radius:10px;padding:8px;font-size:12px"><b>'+n+'</b><br><span class=sub>'+d+'</span></div>').join('')+'</div></div>'+
+'<div class=card><label style="margin-top:0">Tamanho <span id=tv>'+W.s+'</span></label><input type=range id=s min=16 max=120 value='+W.s+' style="width:100%" oninput="tv.textContent=this.value">'+
+'<label>Opacidade <span id=ov>'+W.o+'%</span></label><input type=range id=o min=5 max=100 value='+W.o+' style="width:100%" oninput="ov.textContent=this.value+\'%\'">'+
+'<label>Cor do texto</label><div class=chk>'+COR.map(([c,n])=>'<label><input type=radio name=cor value="'+c+'"'+(W.c===c?' checked':'')+'>'+n+'</label>').join('')+'</div></div>'+
+'<div class=acoes><button class="btn cinza" onclick="tg.close()">Cancelar</button><button class=btn onclick="ler();enviar(Object.assign({tipo:\'marca\'},W))">Salvar</button></div></div>'}
+function ler(){if(!$('#t'))return;W.on=$('#on').checked;W.t=$('#t').value;W.s=+$('#s').value;W.o=+$('#o').value;W.c=(document.querySelector('input[name=cor]:checked')||{}).value||W.c}
+lerDados().then(d=>{if(!d)return semDados();W=d;tela()}).catch(semDados);
+</script></body></html>
