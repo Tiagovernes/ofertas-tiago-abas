@@ -1,0 +1,11 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Log de compras</title><link rel="stylesheet" href="estilo.css"><script src="https://telegram.org/js/telegram-web-app.js"></script><script src="comum.js"></script></head>
+<body><div id="app"><h1>📜 Log de compras</h1><p class="hint" id="res"></p><div id="lista"></div></div>
+<script>
+(async () => { const D = await lerDados(); if (!D) return semDados();
+  res.textContent = D.resumo || '';
+  const box = document.getElementById('lista');
+  if (!D.ev.length) box.append(el('p', { className: 'hint' }, 'Nenhuma tentativa registrada ainda.'));
+  D.ev.slice().reverse().forEach(([t, x]) => box.append(el('div', { className: 'ev' }, el('b', {}, t), x)));
+})();
+</script></body></html>

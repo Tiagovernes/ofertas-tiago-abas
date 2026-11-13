@@ -1,0 +1,15 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lojas</title><link rel="stylesheet" href="estilo.css"><script src="https://telegram.org/js/telegram-web-app.js"></script><script src="comum.js"></script></head>
+<body><div id="app"><h1>🏪 Lojas</h1><p class="hint">Ligue ou desligue cada site. Vale na hora, sem reiniciar.</p><div id="lista"></div>
+<button class="salvar" onclick="salvarLojas()">Salvar</button></div>
+<script>
+let D;
+(async () => { D = await lerDados(); if (!D) return semDados();
+  const box = document.getElementById('lista');
+  D.s.forEach(([nome, off], i) => box.append(el('label', { className: 'sw' }, nome, el('input', { type: 'checkbox', checked: !off, id: 'c' + i }))));
+})();
+function salvarLojas() {
+  const off = D.s.map((_, i) => i).filter(i => !document.getElementById('c' + i).checked);
+  enviar({ tipo: 'lojas', k: D.k, off });
+}
+</script></body></html>

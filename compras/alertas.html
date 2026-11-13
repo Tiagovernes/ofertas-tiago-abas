@@ -1,0 +1,6 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alertas</title><link rel="stylesheet" href="estilo.css"><script src="https://telegram.org/js/telegram-web-app.js"></script><script src="comum.js"></script></head>
+<body><div id="app"><h1>🔔 Alertas (só aviso)</h1><p class="hint">Coleções que o bot só AVISA quando aparecem, sem comprar.</p><div id="col"></div>
+<button class="salvar" onclick="enviar({tipo:'alertas', colecao: col.map(s=>s.trim()).filter(Boolean)})">Salvar</button></div>
+<script>let D, col; (async () => { D = await lerDados(); if (!D) return semDados(); col = [...D.colecao]; listaEditavel('col', col); })();</script>
+</body></html>

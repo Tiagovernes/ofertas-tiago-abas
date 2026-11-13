@@ -1,0 +1,22 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Regras de compra</title><link rel="stylesheet" href="estilo.css"><script src="https://telegram.org/js/telegram-web-app.js"></script><script src="comum.js"></script></head>
+<body><div id="app"><h1>⚙️ Regras de compra</h1>
+<h2>Palavras que o bot COMPRA</h2><p class="hint">Se o nome do produto tiver uma destas palavras (ex.: "30 anos"), ele compra.</p><div id="pal"></div>
+<h2>Regras das distribuidoras (B2B)</h2><div id="b2b" class="card hint"></div>
+<h2>Limites</h2>
+<div class="card"><label>Valor máximo por pedido (R$)<input type="number" id="lp" min="1" step="1"></label>
+<label>Valor máximo por dia (R$)<input type="number" id="ld" min="1" step="1"></label>
+<label>Pedidos por dia<input type="number" id="ln" min="1" max="50" step="1"></label></div>
+<button class="salvar" onclick="salvarRegras()">Salvar</button></div>
+<script>
+let D, pal;
+(async () => { D = await lerDados(); if (!D) return semDados();
+  pal = [...D.palavras]; listaEditavel('pal', pal);
+  document.getElementById('b2b').innerHTML = (D.b2b || []).map(t => '• ' + t).join('<br>') + '<br><br>Para mudar estas regras, peça ao Claude.';
+  lp.value = D.lim.valor_max_pedido; ld.value = D.lim.valor_max_dia; ln.value = D.lim.pedidos_max_dia;
+})();
+function salvarRegras() {
+  enviar({ tipo: 'regras', palavras: pal.map(s => s.trim()).filter(Boolean),
+           lim: { valor_max_pedido: +lp.value, valor_max_dia: +ld.value, pedidos_max_dia: +ln.value } });
+}
+</script></body></html>
